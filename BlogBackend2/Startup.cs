@@ -1,3 +1,4 @@
+using BlogBackend2.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,8 @@ namespace BlogBackend2
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogBackend2", Version = "v1" });
             });
+
+            services.AddDbContext<PostgreDbContext>(ServiceLifetime.Scoped);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
