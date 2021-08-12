@@ -1,6 +1,7 @@
 ﻿using BlogBackend2.EntityFramework.DbContexts;
 using BlogBackend2.Models.Dtos;
 using BlogBackend2.Models.Entities;
+using BlogBackend2.Utilities.Constants;
 using BlogBackend2.Utilities.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,14 +32,14 @@ namespace BlogBackend2.Controllers
             };
 
             if (dbContext.Categories.Any(p => p.Name.Equals(addDto.Name)))
-                return BadRequest(new Result(success: false, message: "Böyle bir Kategori adı zaten var."));
+                return BadRequest(new Result(success: false,Messages.CategoryNotFound));
 
             dbContext.Add(category);
             bool addResult = dbContext.SaveChanges() > 0;
             if (addResult)
-                return Ok(new Result(success: true, message: "Kategori eklendi."));
+                return Ok(new Result(success: true, message: Messages.CategoryNotAdded));
 
-            return BadRequest(new Result(success: false, message: "Kategori eklenemedi."));
+            return BadRequest(new Result(success: false, message: Messages.CategoryAdded));
         }
 
         [HttpGet("listwithoutjoin")]
@@ -50,7 +51,8 @@ namespace BlogBackend2.Controllers
                         {
                             Id = category.Id,
                             Name = category.Name,
-                            IsActive = category.IsActive
+                            IsActive = category.IsActive,
+                            ArticleCount = category.Articles.Count
                         };
 
             return Ok(query.ToList());
@@ -77,7 +79,10 @@ namespace BlogBackend2.Controllers
                 });
             });
 
-            return Ok(new DataResult<List<CategoryDto>>(success: true, "Kategoriler listelendi.", categoryDtos));
+            return Ok(new DataResult<List<CategoryDto>>(success: true, Messages.CategoryList, categoryDtos));
         }
+
+
+
     }
 }

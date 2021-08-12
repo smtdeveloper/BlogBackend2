@@ -5,7 +5,7 @@ namespace BlogBackend2.EntityFramework.DbContexts
 {
     public class PostgreDbContext : DbContext
     {
-        private string connectionString = "User ID=postgres;Password=07mekan07;Host=localhost;Port=5432;Database=BlogDb;";
+        private string connectionString = "User ID=postgres;Password=EslemBetul;Host=localhost;Port=5432;Database=BlogDb;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(connectionString);
