@@ -128,6 +128,25 @@ namespace BlogBackend2.Controllers
             return Ok(new DataResult<List<CategoryDto>>(success: true, Messages.CategoryIdList, categoryDtos));
         }
 
+        [HttpPut("delete")]
+        public IActionResult Delete(CategoryDeleteDto deleteDto)
+        {
+            Category category = new Category()
+            {
+               Id = deleteDto.Id,
+                IsActive = false,
+                IsDeleted = true
+            };
+
+            _postgreDbContext.Update(category);
+            bool addResult = _postgreDbContext.SaveChanges() > 0;
+            if (addResult)
+                return Ok(new Result(success: true, message: Messages.CategoryDelete));
+
+            return BadRequest(new Result(success: false, message: Messages.CategoryNotDelete));
+
+
+        }
 
     }
 }
