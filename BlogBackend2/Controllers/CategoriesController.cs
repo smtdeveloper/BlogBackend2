@@ -15,7 +15,7 @@ namespace BlogBackend2.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        public PostgreDbContext _postgreDbContext;
+         public PostgreDbContext _postgreDbContext;
 
         public CategoriesController(PostgreDbContext dbContext)
         {
@@ -55,6 +55,9 @@ namespace BlogBackend2.Controllers
                 
                
             };
+
+            if (_postgreDbContext.Categories.Any(p => p.Name.Equals(updateDto.Name)))
+                return BadRequest(new Result(success: false, Messages.CategoryNotFound));
 
             _postgreDbContext.Update(category);
             bool addResult = _postgreDbContext.SaveChanges() > 0;
